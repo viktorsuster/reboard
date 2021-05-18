@@ -4,7 +4,7 @@ import { Box, Center } from '@chakra-ui/react'
 const Boards = () => {
   return (
     <Box h="100vh">
-      <Center h="100%">Page not found</Center>
+      <Center h="100%">Pagddddde not found</Center>
     </Box>
   )
 }

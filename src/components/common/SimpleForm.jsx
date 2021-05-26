@@ -1,33 +1,33 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import { Button, Input } from '@chakra-ui/react'
+import { Button, HStack, Input } from '@chakra-ui/react'
 
 export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
   const [value, setValue] = React.useState('')
   return (
-    <form
+    <HStack
+      as="form"
       onSubmit={async (e) => {
         e.preventDefault()
-        await onFormSubmit(value)
-        setValue('')
+        if (value !== '') {
+          await onFormSubmit(value)
+          setValue('')
+        }
       }}
     >
       <Input
         colorScheme="facebook"
         variant="outline"
-        width="50vw"
-        ml="3"
-        mr="3"
         placeholder={inputPlaceholder}
         value={value}
         onChange={(e) => {
           setValue(e.target.value)
         }}
       />
-      <Button mb="1" colorScheme="facebook" type="submit">
+      <Button colorScheme="facebook" type="submit" flex="none">
         {buttonText}
       </Button>
-    </form>
+    </HStack>
   )
 }
 

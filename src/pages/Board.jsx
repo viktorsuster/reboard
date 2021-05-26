@@ -47,6 +47,11 @@ const Board = () => {
                       .map(({ id, name, content }) => (
                         <Task key={id} title={name} content={content} />
                       ))}
+                    <SimpleForm
+                      buttonText="Add task"
+                      inputPlaceholder="Task name"
+                      onFormSubmit={async (value) => value}
+                    />
                   </TaskGroup>
                 ))
               }

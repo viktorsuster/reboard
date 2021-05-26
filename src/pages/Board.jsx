@@ -1,28 +1,49 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Center } from '@chakra-ui/react'
-// import { getBoard } from '../utils/api'
+import { Box, Center, SimpleGrid } from '@chakra-ui/react'
+import { TaskGroup } from '../components/TaskGroup'
+import { Task } from '../components/Task'
+import { getBoard } from '../utils/api'
 
 const Board = () => {
   const { id } = useParams()
-  // const [status, setStatus] = React.useState('loading')
-  // const [board, setBoard] = React.useState({})
+  const [board, setBoard] = React.useState({})
 
-  // useEffect(() => {
-  //   try {
-  //     const fetchData = async () => {
-  //       const data = await getBoard(id)
-  //       setBoard(data)
-  //     }
-  //     fetchData()
-  //   } catch (e) {
-  //     // do nothing
-  //   }
-  // }, [id])
+  React.useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const data = await getBoard(id)
+        setBoard(data)
+      }
+      fetchData()
+    } catch (e) {
+      // do nothing
+    }
+  }, [id])
 
   return (
     <Box h="100vh">
-      <Center h="100%">Board {id} detail</Center>
+      <Center>
+        <Box>
+          <Center>
+            <SimpleGrid mt="10" columns="2" spacingX="20px" spacingY="20px">
+              {
+                // eslint-disable-next-line no-shadow
+                board.taskGroups?.map(({ name, id, taskIds }) => (
+                  <TaskGroup key={id} title={name} color="blue.500">
+                    {board.tasks
+                      ?.filter((tasks) => taskIds.includes(tasks.id))
+                      // eslint-disable-next-line no-shadow
+                      .map(({ id, name, content }) => (
+                        <Task key={id} title={name} content={content} />
+                      ))}
+                  </TaskGroup>
+                ))
+              }
+            </SimpleGrid>
+          </Center>
+        </Box>
+      </Center>
     </Box>
   )
 }

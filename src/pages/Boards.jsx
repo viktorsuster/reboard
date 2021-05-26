@@ -12,17 +12,19 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
-import { getBoards } from '../utils/api'
+import { createBoard, getBoards } from '../utils/api'
 
 const Boards = () => {
   const [boards, setBoards] = React.useState([])
+  const [boardName, setBoardName] = React.useState('')
+
+  const fetchData = async () => {
+    const data = await getBoards()
+    setBoards(data)
+  }
 
   React.useEffect(() => {
     try {
-      const fetchData = async () => {
-        const data = await getBoards()
-        setBoards(data)
-      }
       fetchData()
     } catch (e) {
       // do nothing
@@ -50,7 +52,14 @@ const Boards = () => {
               ))}
             </MenuList>
           </Menu>
-          <form>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault()
+              await createBoard(boardName)
+              setBoardName('')
+              fetchData()
+            }}
+          >
             <Input
               colorScheme="facebook"
               variant="outline"
@@ -58,6 +67,10 @@ const Boards = () => {
               ml="3"
               mr="3"
               placeholder="Name of the new board..."
+              value={boardName}
+              onChange={(e) => {
+                setBoardName(e.target.value)
+              }}
             />
             <Button mb="1" colorScheme="facebook" type="submit">
               Add

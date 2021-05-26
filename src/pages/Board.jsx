@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Button, Center, Input, SimpleGrid } from '@chakra-ui/react'
+import { Box, Center, SimpleGrid } from '@chakra-ui/react'
 import { TaskGroup } from '../components/TaskGroup'
 import { Task } from '../components/Task'
 import { getBoard, createTaskGroup } from '../utils/api'
+import { SimpleForm } from '../components'
 
 const Board = () => {
   const { id } = useParams()
   const [board, setBoard] = React.useState({})
-  const [taskGroupName, setTaskGroupName] = React.useState('')
 
   const fetchData = React.useCallback(async () => {
     const data = await getBoard(id)
@@ -27,30 +27,14 @@ const Board = () => {
     <Box h="100vh">
       <Center>
         <Box>
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault()
-              await createTaskGroup(Number(id), taskGroupName)
-              setTaskGroupName('')
+          <SimpleForm
+            buttonText="Add task group"
+            inputPlaceholder="Name of the new task group..."
+            onFormSubmit={async (value) => {
+              await createTaskGroup(Number(id), value)
               fetchData()
             }}
-          >
-            <Input
-              colorScheme="facebook"
-              variant="outline"
-              width="50vw"
-              ml="3"
-              mr="3"
-              placeholder="Name of the new task group..."
-              value={taskGroupName}
-              onChange={(e) => {
-                setTaskGroupName(e.target.value)
-              }}
-            />
-            <Button mb="1" colorScheme="facebook" type="submit">
-              Add task group
-            </Button>
-          </form>
+          />
           <Center>
             <SimpleGrid mt="10" columns="2" spacingX="20px" spacingY="20px">
               {

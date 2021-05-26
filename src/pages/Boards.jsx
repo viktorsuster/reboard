@@ -7,16 +7,15 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Input,
   SimpleGrid,
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 import { createBoard, getBoards } from '../utils/api'
+import { SimpleForm } from '../components'
 
 const Boards = () => {
   const [boards, setBoards] = React.useState([])
-  const [boardName, setBoardName] = React.useState('')
 
   const fetchData = async () => {
     const data = await getBoards()
@@ -52,30 +51,14 @@ const Boards = () => {
               ))}
             </MenuList>
           </Menu>
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault()
-              await createBoard(boardName)
-              setBoardName('')
+          <SimpleForm
+            buttonText="Add"
+            inputPlaceholder="Name of the new board..."
+            onFormSubmit={async (value) => {
+              await createBoard(value)
               fetchData()
             }}
-          >
-            <Input
-              colorScheme="facebook"
-              variant="outline"
-              width="50vw"
-              ml="3"
-              mr="3"
-              placeholder="Name of the new board..."
-              value={boardName}
-              onChange={(e) => {
-                setBoardName(e.target.value)
-              }}
-            />
-            <Button mb="1" colorScheme="facebook" type="submit">
-              Add
-            </Button>
-          </form>
+          />
         </Box>
         <SimpleGrid mt="10" spacingY="20px">
           {boards.map((board) => (

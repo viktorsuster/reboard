@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
-import { createBoard, getBoards } from '../utils/api'
+import { createBoard, getBoards, removeBoard } from '../utils/api'
 import { SimpleForm } from '../components'
 
 const Boards = () => {
@@ -41,12 +41,19 @@ const Boards = () => {
               colorScheme="facebook"
               rightIcon={<ChevronDownIcon />}
             >
-              Boards
+              Delete board
             </MenuButton>
             <MenuList>
               {boards.map((board) => (
-                <MenuItem key={board.id}>
-                  <Link to={String(board.id)}>{board.name}</Link>
+                <MenuItem
+                  key={board.id}
+                  onClick={async () => {
+                    await removeBoard(board.id)
+                    fetchData()
+                  }}
+                >
+                  <DeleteIcon mr="15" />
+                  {board.name}
                 </MenuItem>
               ))}
             </MenuList>
@@ -64,7 +71,6 @@ const Boards = () => {
           {boards.map((board) => (
             <Link key={board.id} to={String(board.id)}>
               {board.name}
-              <DeleteIcon ml="15px" />
             </Link>
           ))}
         </SimpleGrid>

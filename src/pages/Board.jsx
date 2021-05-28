@@ -3,17 +3,17 @@ import { useParams } from 'react-router-dom'
 import { Box, Center, SimpleGrid } from '@chakra-ui/react'
 import { TaskGroup } from '../components/TaskGroup'
 import { Task } from '../components/Task'
-import { getBoard, createTaskGroup } from '../utils/api'
+import { getBoard, createTaskGroup, createTask, removeTaskGroup } from '../utils/api'
 import { SimpleForm } from '../components'
 
 const Board = () => {
-  const { id } = useParams()
+  const { id: boardID } = useParams()
   const [board, setBoard] = React.useState({})
 
   const fetchData = React.useCallback(async () => {
-    const data = await getBoard(id)
+    const data = await getBoard(boardID)
     setBoard(data)
-  }, [id])
+  }, [boardID])
 
   React.useEffect(() => {
     try {
@@ -31,7 +31,7 @@ const Board = () => {
             buttonText="Add task group"
             inputPlaceholder="Name of the new task group..."
             onFormSubmit={async (value) => {
-              await createTaskGroup(Number(id), value)
+              await createTaskGroup(Number(boardID), value)
               fetchData()
             }}
           />
@@ -39,18 +39,29 @@ const Board = () => {
             <SimpleGrid mt="10" columns="2" spacingX="20px" spacingY="20px">
               {
                 // eslint-disable-next-line no-shadow
-                board.taskGroups?.map(({ name, id, taskIds }) => (
-                  <TaskGroup key={id} title={name} color="blue.500">
+                board.taskGroups?.map(({ name, id: taskGroupID, taskIds }) => (
+                  <TaskGroup
+                    key={taskGroupID}
+                    title={name}
+                    color="blue.500"
+                    onDelete={async () => {
+                      await removeTaskGroup(taskGroupID)
+                      fetchData()
+                    }}
+                  >
                     {board.tasks
                       ?.filter((tasks) => taskIds.includes(tasks.id))
                       // eslint-disable-next-line no-shadow
                       .map(({ id, name, content }) => (
-                        <Task key={id} title={name} content={content} />
+                        <Task key={id} name={name} content={content} />
                       ))}
                     <SimpleForm
-                      buttonText="Add task"
+                      buttonText="Add"
                       inputPlaceholder="Task name"
-                      onFormSubmit={async (value) => value}
+                      onFormSubmit={async (value) => {
+                        await createTask(Number(boardID), Number(taskGroupID), { name: value })
+                        fetchData()
+                      }}
                     />
                   </TaskGroup>
                 ))

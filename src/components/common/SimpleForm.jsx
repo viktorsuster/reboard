@@ -1,6 +1,7 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import { Button, HStack, Input } from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
 
 export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
   const [value, setValue] = React.useState('')
@@ -24,7 +25,7 @@ export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
           setValue(e.target.value)
         }}
       />
-      <Button colorScheme="facebook" type="submit" flex="none">
+      <Button leftIcon={<AddIcon />} colorScheme="facebook" type="submit" flex="none">
         {buttonText}
       </Button>
     </HStack>

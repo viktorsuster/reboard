@@ -9,7 +9,7 @@ import {
   MenuList,
   SimpleGrid,
 } from '@chakra-ui/react'
-import { ChevronDownIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 import { createBoard, getBoards } from '../utils/api'
 import { SimpleForm } from '../components'
@@ -64,6 +64,7 @@ const Boards = () => {
           {boards.map((board) => (
             <Link key={board.id} to={String(board.id)}>
               {board.name}
+              <DeleteIcon ml="15px" />
             </Link>
           ))}
         </SimpleGrid>

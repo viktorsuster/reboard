@@ -3,24 +3,25 @@ import {
   Box,
   Button,
   Center,
-  Menu,
-  MenuButton,
-  MenuItem,
   useToast,
-  MenuList,
   SimpleGrid,
   Text,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
   useDisclosure,
-  ModalBody,
-  Input,
-  ModalFooter,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+  ListItem,
+  UnorderedList,
 } from '@chakra-ui/react'
-import { ChevronDownIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 import { createBoard, getBoards, removeBoard } from '../utils/api'
 import { SimpleForm } from '../components'
@@ -28,6 +29,7 @@ import { SimpleForm } from '../components'
 const Boards = () => {
   const [boards, setBoards] = React.useState([])
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const btnRef = React.useRef()
   const toast = useToast()
 
   if (!boards.length) {
@@ -35,6 +37,7 @@ const Boards = () => {
       status: 'error',
       title: 'No boards',
       description: "Let's create a new board!",
+      duration: 3000,
     })
   }
 
@@ -55,58 +58,86 @@ const Boards = () => {
     <Box>
       <Center display="block" textAlign="center">
         <Box display="inline-list-item" mt="10">
-          <Menu>
-            <MenuButton as={Button} colorScheme="facebook" mr="1" rightIcon={<ChevronDownIcon />}>
-              Delete board
-            </MenuButton>
-            <MenuList>
-              {boards.map((board) => (
-                <MenuItem
-                  key={board.id}
-                  onClick={async () => {
-                    await removeBoard(board.id)
-                    fetchData()
-                  }}
-                >
-                  <DeleteIcon mr="15" />
-                  {board.name}
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton as={Button} colorScheme="facebook" mr="1" rightIcon={<ChevronDownIcon />}>
-              Edit board
-            </MenuButton>
-            <MenuList>
-              {boards.map((board) => (
-                <MenuItem onClick={onOpen} key={board.id}>
-                  <EditIcon mr="15" />
-                  {board.name}
-                </MenuItem>
-              ))}
-            </MenuList>
-            <Modal isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Edit board name</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <Text>Change list name</Text>
-                  <form>
-                    <Input type="text" value="board name" autoFocus />
-                  </form>
-                </ModalBody>
+          <Button ref={btnRef} colorScheme="facebook" mr="1" onClick={onOpen}>
+            Edit
+          </Button>
+          <Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerCloseButton />
+              <DrawerHeader>Edit Boards</DrawerHeader>
 
-                <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={onClose}>
-                    Close
-                  </Button>
-                  <Button variant="ghost">Edit</Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-          </Menu>
+              <DrawerBody>
+                <Accordion allowToggle>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          Delete board
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <UnorderedList>
+                        {boards.map((board) => (
+                          <ListItem
+                            as="button"
+                            fontWeight="semibold"
+                            display="block"
+                            mt="2"
+                            key={board.id}
+                            onClick={async () => {
+                              await removeBoard(board.id)
+                              fetchData()
+                            }}
+                          >
+                            {board.name}
+                          </ListItem>
+                        ))}
+                      </UnorderedList>
+                    </AccordionPanel>
+                  </AccordionItem>
+
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          Edit board
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <UnorderedList>
+                        {boards.map((board) => (
+                          <ListItem
+                            as="button"
+                            fontWeight="semibold"
+                            display="block"
+                            mt="2"
+                            key={board.id}
+                            onClick={async () => {
+                              await removeBoard(board.id)
+                              fetchData()
+                            }}
+                          >
+                            {board.name}
+                          </ListItem>
+                        ))}
+                      </UnorderedList>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+              </DrawerBody>
+
+              <DrawerFooter>
+                <Button variant="outline" mr={3} onClick={onClose}>
+                  Close
+                </Button>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
           <SimpleForm
             buttonText="Add"
             inputPlaceholder="Name of the new board..."

@@ -10,7 +10,7 @@ const BrandLogo = ({ size = '3xl' }) => {
         <Icon as={HiUserGroup} color="blue.400" mb={2} mr={2} />
         reBoard
       </Text>
-      <Tooltip hasArrow label="Search tasks" bg="blue.600">
+      <Tooltip hasArrow placement="auto-start" label="Search tasks" bg="blue.600">
         <Input type="text" placeholder="Search ..." w="40vw" position="relative" float="right" />
       </Tooltip>
     </>

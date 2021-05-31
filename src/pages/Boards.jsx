@@ -6,16 +6,37 @@ import {
   Menu,
   MenuButton,
   MenuItem,
+  useToast,
   MenuList,
   SimpleGrid,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  useDisclosure,
+  ModalBody,
+  Input,
+  ModalFooter,
 } from '@chakra-ui/react'
-import { ChevronDownIcon, DeleteIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 import { createBoard, getBoards, removeBoard } from '../utils/api'
 import { SimpleForm } from '../components'
 
 const Boards = () => {
   const [boards, setBoards] = React.useState([])
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const toast = useToast()
+
+  if (!boards.length) {
+    toast({
+      status: 'error',
+      title: 'No boards',
+      description: "Let's create a new board!",
+    })
+  }
 
   const fetchData = async () => {
     const data = await getBoards()
@@ -35,12 +56,7 @@ const Boards = () => {
       <Center display="block" textAlign="center">
         <Box display="inline-list-item" mt="10">
           <Menu>
-            <MenuButton
-              w="150px"
-              as={Button}
-              colorScheme="facebook"
-              rightIcon={<ChevronDownIcon />}
-            >
+            <MenuButton as={Button} colorScheme="facebook" mr="1" rightIcon={<ChevronDownIcon />}>
               Delete board
             </MenuButton>
             <MenuList>
@@ -58,6 +74,39 @@ const Boards = () => {
               ))}
             </MenuList>
           </Menu>
+          <Menu>
+            <MenuButton as={Button} colorScheme="facebook" mr="1" rightIcon={<ChevronDownIcon />}>
+              Edit board
+            </MenuButton>
+            <MenuList>
+              {boards.map((board) => (
+                <MenuItem onClick={onOpen} key={board.id}>
+                  <EditIcon mr="15" />
+                  {board.name}
+                </MenuItem>
+              ))}
+            </MenuList>
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Edit board name</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Text>Change list name</Text>
+                  <form>
+                    <Input type="text" value="board name" autoFocus />
+                  </form>
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button variant="ghost">Edit</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </Menu>
           <SimpleForm
             buttonText="Add"
             inputPlaceholder="Name of the new board..."
@@ -67,6 +116,9 @@ const Boards = () => {
             }}
           />
         </Box>
+        <Text color="gray.400" mt="5">
+          {boards.length} boards
+        </Text>
         <SimpleGrid mt="10" spacingY="20px">
           {boards.map((board) => (
             <Link key={board.id} to={String(board.id)}>

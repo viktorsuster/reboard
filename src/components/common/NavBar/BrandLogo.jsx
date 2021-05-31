@@ -1,14 +1,19 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import { Text, Icon } from '@chakra-ui/react'
-import { HiOutlineViewBoards } from 'react-icons/hi'
+import { Text, Icon, Input, Tooltip } from '@chakra-ui/react'
+import { HiUserGroup } from 'react-icons/hi'
 
 const BrandLogo = ({ size = '3xl' }) => {
   return (
-    <Text as="a" href="/" fontSize={size} fontWeight="bold" lineHeight="1">
-      <Icon as={HiOutlineViewBoards} color="blue.400" mr={2} />
-      reboard
-    </Text>
+    <>
+      <Text as="a" href="/" fontSize={size} fontWeight="bold" lineHeight="1">
+        <Icon as={HiUserGroup} color="blue.400" mb={2} mr={2} />
+        reBoard
+      </Text>
+      <Tooltip hasArrow label="Search tasks" bg="blue.600">
+        <Input type="text" placeholder="Search ..." w="40vw" position="relative" float="right" />
+      </Tooltip>
+    </>
   )
 }
 

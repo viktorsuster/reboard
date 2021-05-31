@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Center, SimpleGrid } from '@chakra-ui/react'
+import { Box, Center, SimpleGrid, Text } from '@chakra-ui/react'
 import { TaskGroup } from '../components/TaskGroup'
 import { Task } from '../components/Task'
 import { getBoard, createTaskGroup, createTask, removeTaskGroup } from '../utils/api'
@@ -35,14 +35,17 @@ const Board = () => {
               fetchData()
             }}
           />
+          <Text color="gray.400" mt="5">
+            {boardID.length} groups
+          </Text>
           <Center>
             <SimpleGrid mt="10" columns="2" spacingX="20px" spacingY="20px">
               {
                 // eslint-disable-next-line no-shadow
-                board.taskGroups?.map(({ name, id: taskGroupID, taskIds }) => (
+                board.taskGroups?.map(({ name: newName, id: taskGroupID, taskIds }) => (
                   <TaskGroup
                     key={taskGroupID}
-                    title={name}
+                    title={newName}
                     color="blue.500"
                     onDelete={async () => {
                       await removeTaskGroup(taskGroupID)

@@ -3,7 +3,14 @@ import { useParams } from 'react-router-dom'
 import { Box, Center, SimpleGrid, Text } from '@chakra-ui/react'
 import { TaskGroup } from '../components/TaskGroup'
 import { Task } from '../components/Task'
-import { getBoard, createTaskGroup, createTask, removeTaskGroup } from '../utils/api'
+import {
+  getBoard,
+  createTaskGroup,
+  createTask,
+  removeTaskGroup,
+  updateTaskGroup,
+  updateTask,
+} from '../utils/api'
 import { SimpleForm } from '../components'
 
 const Board = () => {
@@ -51,18 +58,26 @@ const Board = () => {
                       await removeTaskGroup(taskGroupID)
                       fetchData()
                     }}
+                    onSubmit={async (newTaskGroupName) => {
+                      await updateTaskGroup(taskGroupID, { name: newTaskGroupName })
+                      fetchData()
+                    }}
                   >
                     {board.tasks
                       ?.filter((tasks) => taskIds.includes(tasks.id))
                       // eslint-disable-next-line no-shadow
-                      .map(({ id, name, content }) => (
-                        <Task key={id} name={name} content={content} />
+                      .map(({ id: taskID, name, content }) => (
+                        <Task key={taskID} name={name} content={content} />
                       ))}
                     <SimpleForm
                       buttonText="Add"
                       inputPlaceholder="Task name"
                       onFormSubmit={async (value) => {
                         await createTask(Number(boardID), Number(taskGroupID), { name: value })
+                        fetchData()
+                      }}
+                      onSubmit={async (newTaskName) => {
+                        await updateTask({ name: newTaskName })
                         fetchData()
                       }}
                     />

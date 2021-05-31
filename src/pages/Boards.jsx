@@ -21,8 +21,12 @@ import {
   AccordionPanel,
   ListItem,
   UnorderedList,
+  Editable,
+  EditablePreview,
+  EditableInput,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { createBoard, getBoards, removeBoard } from '../utils/api'
 import { SimpleForm } from '../components'
 
@@ -92,6 +96,7 @@ const Boards = () => {
                               fetchData()
                             }}
                           >
+                            <DeleteIcon mr="3" />
                             {board.name}
                           </ListItem>
                         ))}
@@ -111,19 +116,13 @@ const Boards = () => {
                     <AccordionPanel pb={4}>
                       <UnorderedList>
                         {boards.map((board) => (
-                          <ListItem
-                            as="button"
-                            fontWeight="semibold"
-                            display="block"
-                            mt="2"
-                            key={board.id}
-                            onClick={async () => {
-                              await removeBoard(board.id)
-                              fetchData()
-                            }}
-                          >
-                            {board.name}
-                          </ListItem>
+                          <>
+                            <Editable defaultValue={board.name}>
+                              <EditIcon mr="3" />
+                              <EditablePreview />
+                              <EditableInput />
+                            </Editable>
+                          </>
                         ))}
                       </UnorderedList>
                     </AccordionPanel>

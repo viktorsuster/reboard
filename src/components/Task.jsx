@@ -17,7 +17,8 @@ import {
 } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 
-export const Task = ({ name, content, editTask }) => {
+export const Task = ({ name, content, editTask, onSubmit }) => {
+  const [newTaskName, setNewTaskName] = React.useState('')
   const toast = useToast()
 
   if (!name.length) {
@@ -37,17 +38,34 @@ export const Task = ({ name, content, editTask }) => {
           </Button>
         </PopoverTrigger>
         <Portal>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverHeader>Edit {name}</PopoverHeader>
-            <PopoverCloseButton />
-            <PopoverBody>
-              <Input type="text" placeholder="New task name ..." />
-            </PopoverBody>
-            <PopoverFooter>
-              <Button colorScheme="blue">Edit</Button>
-            </PopoverFooter>
-          </PopoverContent>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              onSubmit(newTaskName)
+              setNewTaskName('')
+            }}
+          >
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverHeader>Edit task</PopoverHeader>
+              <PopoverCloseButton />
+              <PopoverBody>
+                <Input type="text" value={name} disabled />
+                <Input
+                  type="text"
+                  value={newTaskName}
+                  onChange={(e) => {
+                    setNewTaskName(e.target.value)
+                  }}
+                />
+              </PopoverBody>
+              <PopoverFooter>
+                <Button type="submit" colorScheme="blue">
+                  Edit
+                </Button>
+              </PopoverFooter>
+            </PopoverContent>
+          </form>
         </Portal>
       </Popover>
       <Text>{name}</Text>
@@ -59,4 +77,5 @@ Task.propTypes = {
   name: PropTypes.string,
   content: PropTypes.string,
   editTask: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 }

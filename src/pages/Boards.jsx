@@ -23,10 +23,11 @@ import {
   Editable,
   EditablePreview,
   EditableInput,
+  useToast,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import { createBoard, getBoards, removeBoard } from '../utils/api'
+import { createBoard, getBoards, removeBoard, updateBoard } from '../utils/api'
 import { SimpleForm } from '../components'
 
 const Boards = (onSubmit) => {
@@ -34,6 +35,7 @@ const Boards = (onSubmit) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
   const [newBoardName, setNewBoardName] = React.useState('')
+  const toast = useToast()
 
   const fetchData = async () => {
     const data = await getBoards()
@@ -47,6 +49,15 @@ const Boards = (onSubmit) => {
       // do nothing
     }
   }, [])
+
+  if (!boards.length) {
+    toast({
+      status: 'error',
+      title: 'No boards',
+      description: "Let's create a new board!",
+      duration: 3000,
+    })
+  }
 
   return (
     <Box>
@@ -66,7 +77,7 @@ const Boards = (onSubmit) => {
                   <AccordionItem>
                     <h2>
                       <AccordionButton>
-                        <Box flex="1" textAlign="left">
+                        <Box fontWeight="semibold" flex="1" textAlign="left">
                           Delete board
                         </Box>
                         <AccordionIcon />
@@ -77,13 +88,20 @@ const Boards = (onSubmit) => {
                         {boards.map((board) => (
                           <ListItem
                             as="button"
-                            fontWeight="semibold"
+                            fontWeight="normal"
+                            color="red.400"
                             display="block"
                             mt="2"
                             key={board.id}
                             onClick={async () => {
                               await removeBoard(board.id)
                               fetchData()
+                              toast({
+                                status: 'error',
+                                title: `Delete ${board.name}`,
+                                description: "Let's create a new board!",
+                                duration: 3000,
+                              })
                             }}
                           >
                             <DeleteIcon mr="3" />
@@ -97,7 +115,7 @@ const Boards = (onSubmit) => {
                   <AccordionItem>
                     <h2>
                       <AccordionButton>
-                        <Box flex="1" textAlign="left">
+                        <Box fontWeight="semibold" flex="1" textAlign="left">
                           Edit board
                         </Box>
                         <AccordionIcon />
@@ -146,6 +164,16 @@ const Boards = (onSubmit) => {
             inputPlaceholder="Name of the new board..."
             onFormSubmit={async (value) => {
               await createBoard(value)
+              fetchData()
+              toast({
+                status: 'success',
+                title: 'Successfully',
+                description: `Added board: (${value.toUpperCase()})`,
+                duration: 3000,
+              })
+            }}
+            onSubmit={async (newNameBoard) => {
+              await updateBoard({ name: newNameBoard })
               fetchData()
             }}
           />

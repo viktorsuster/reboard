@@ -13,21 +13,11 @@ import {
   PopoverTrigger,
   Portal,
   Text,
-  useToast,
 } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 
 export const Task = ({ name, content, onSubmit }) => {
   const [newTaskName, setNewTaskName] = React.useState('')
-  const toast = useToast()
-
-  if (!name.length) {
-    toast({
-      status: 'error',
-      title: 'Oi! Something went wrong!',
-      description: 'We will fix the problem as soon as possible.',
-    })
-  }
 
   return (
     <Box p="3" h="max-content" borderRadius="md" shadow="base">

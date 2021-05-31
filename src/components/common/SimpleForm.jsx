@@ -14,13 +14,6 @@ export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
         if (value !== '') {
           await onFormSubmit(value)
           setValue('')
-          toast({
-            title: 'Successfully',
-            description: 'You have added a new task',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          })
         } else {
           toast({
             title: 'Empty',
@@ -35,6 +28,7 @@ export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
       <Input
         colorScheme="facebook"
         variant="outline"
+        width="30vh"
         placeholder={inputPlaceholder}
         value={value}
         onChange={(e) => {

@@ -5,11 +5,11 @@
 
 ### Creating new boards, lists, cards
 
-![Screenshot](ScreenBoardGroup.png)
+![Screenshot](ScreenTaskGroup.png)
 
 ### Deleting boards, lists, cards
 
-![Screenshot](ScreenTaskGroup.png)
+![Screenshot](ScreenBoardGroup.png)
 
 ### Editing lists
 ### Stats

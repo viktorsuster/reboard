@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Center,
-  useToast,
   SimpleGrid,
   Text,
   useDisclosure,
@@ -30,20 +29,11 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { createBoard, getBoards, removeBoard } from '../utils/api'
 import { SimpleForm } from '../components'
 
-const Boards = () => {
+const Boards = (onSubmit) => {
   const [boards, setBoards] = React.useState([])
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
-  const toast = useToast()
-
-  if (!boards.length) {
-    toast({
-      status: 'error',
-      title: 'No boards',
-      description: "Let's create a new board!",
-      duration: 3000,
-    })
-  }
+  const [newBoardName, setNewBoardName] = React.useState('')
 
   const fetchData = async () => {
     const data = await getBoards()
@@ -120,7 +110,21 @@ const Boards = () => {
                             <Editable defaultValue={board.name}>
                               <EditIcon mr="3" />
                               <EditablePreview />
-                              <EditableInput />
+                              <form
+                                onSubmit={(e) => {
+                                  e.preventDefault()
+                                  onSubmit(newBoardName)
+                                  setNewBoardName('')
+                                }}
+                              >
+                                <EditableInput
+                                  type="text"
+                                  value={newBoardName}
+                                  onChange={(e) => {
+                                    setNewBoardName(e.target.value)
+                                  }}
+                                />
+                              </form>
                             </Editable>
                           </>
                         ))}

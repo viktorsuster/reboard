@@ -1,10 +1,11 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import { Button, HStack, Input } from '@chakra-ui/react'
+import { Button, HStack, Input, useToast } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
 
 export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
   const [value, setValue] = React.useState('')
+  const toast = useToast()
   return (
     <HStack
       as="form"
@@ -13,6 +14,21 @@ export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
         if (value !== '') {
           await onFormSubmit(value)
           setValue('')
+          toast({
+            title: 'Successfully',
+            description: 'You have added a new task',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          })
+        } else {
+          toast({
+            title: 'Empty',
+            description: 'You must enter text',
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          })
         }
       }}
     >

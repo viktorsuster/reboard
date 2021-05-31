@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 
-export const Task = ({ name, content, editTask, onSubmit }) => {
+export const Task = ({ name, content, onSubmit }) => {
   const [newTaskName, setNewTaskName] = React.useState('')
   const toast = useToast()
 
@@ -33,7 +33,7 @@ export const Task = ({ name, content, editTask, onSubmit }) => {
     <Box p="3" h="max-content" borderRadius="md" shadow="base">
       <Popover>
         <PopoverTrigger>
-          <Button onClick={editTask} size="sm" float="right">
+          <Button size="sm" float="right">
             Edit
           </Button>
         </PopoverTrigger>
@@ -76,6 +76,5 @@ export const Task = ({ name, content, editTask, onSubmit }) => {
 Task.propTypes = {
   name: PropTypes.string,
   content: PropTypes.string,
-  editTask: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 }

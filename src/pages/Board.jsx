@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Center, SimpleGrid, Text } from '@chakra-ui/react'
+import { Box, Center, SimpleGrid, Text, useToast } from '@chakra-ui/react'
 import { TaskGroup } from '../components/TaskGroup'
 import { Task } from '../components/Task'
 import {
@@ -10,12 +10,23 @@ import {
   removeTaskGroup,
   updateTaskGroup,
   updateTask,
+  updateBoard,
 } from '../utils/api'
 import { SimpleForm } from '../components'
 
 const Board = () => {
   const { id: boardID } = useParams()
   const [board, setBoard] = React.useState({})
+  const toast = useToast()
+
+  if (!boardID.length) {
+    toast({
+      status: 'error',
+      title: 'No boards',
+      description: "Let's create a new board!",
+      duration: 3000,
+    })
+  }
 
   const fetchData = React.useCallback(async () => {
     const data = await getBoard(boardID)
@@ -39,6 +50,10 @@ const Board = () => {
             inputPlaceholder="Name of the new task group..."
             onFormSubmit={async (value) => {
               await createTaskGroup(Number(boardID), value)
+              fetchData()
+            }}
+            onSubmit={async (newBoardName) => {
+              await updateBoard(Number(boardID), { name: newBoardName })
               fetchData()
             }}
           />

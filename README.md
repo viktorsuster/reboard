@@ -1,4 +1,7 @@
 # Sudo Academy: Capstone Project
+# reBoard app: simple task management tool similar to [Trello](https://trello.com/en)
+
+![Screenshot](ScreenBoardGroup.png)
 
 Congratulations! You're almost there but we have one last task for you before
 your graduation day. The best news? You can keep your project after the course's
@@ -7,6 +10,8 @@ over and add it to your portfolio! Ain't that cool?
 It'll give you the much needed experience of working on a real-world project with
 a strict and non-negotiable deadline while providing the necessary freedom to get
 your wheels of creativity spinning.
+
+![Screenshot](ScreenTaskGroup.png)
 
 ## Task Description
 

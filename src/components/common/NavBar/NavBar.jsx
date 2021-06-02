@@ -12,7 +12,7 @@ const NavBar = () => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
-    <Box as="header" bg="white" borderBottom="1px" borderBottomColor="gray.200">
+    <Box as="header" borderBottom="1px" borderBottomColor="gray.200">
       <HStack mx="auto" justify="space-between" maxW="7xl" px={{ base: 6, md: 8 }} py={4}>
         <HStack align="center" spacing={10}>
           <BrandLogo />
@@ -30,7 +30,7 @@ const NavBar = () => {
               <NavButton to="/" icon={<MdDashboard />} onClick={onToggle}>
                 Dashboard
               </NavButton>
-              <NavButton to="/boards" icon={<HiViewBoards />} onClick={onToggle}>
+              <NavButton to="/boards" icon={<HiViewBoards />} onClick={onToggle} color="black">
                 Boards
               </NavButton>
             </Grid>

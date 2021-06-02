@@ -61,10 +61,10 @@ export const TaskGroup = ({ title, color, children, onDelete, onSubmit }) => {
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem color="black" fontSize="xs" onClick={onOpen}>
+                <MenuItem fontSize="xs" onClick={onOpen}>
                   <EditIcon mr="3" /> Edit
                 </MenuItem>
-                <MenuItem color="black" fontSize="xs" onClick={onDelete}>
+                <MenuItem fontSize="xs" onClick={onDelete}>
                   <DeleteIcon mr="3" /> Delete
                 </MenuItem>
               </MenuList>
@@ -93,6 +93,7 @@ export const TaskGroup = ({ title, color, children, onDelete, onSubmit }) => {
               <Text>Change list name</Text>
               <Input type="text" value={title} disabled />
               <Input
+                autoFocus
                 type="text"
                 value={newName}
                 onChange={(e) => {

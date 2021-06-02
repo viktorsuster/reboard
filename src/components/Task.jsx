@@ -53,6 +53,9 @@ export const Task = ({ name, content, onSubmit }) => {
                 <Button type="submit" colorScheme="blue">
                   Edit
                 </Button>
+                <Button type="submit" ml="2" colorScheme="blue">
+                  Delete
+                </Button>
               </PopoverFooter>
             </PopoverContent>
           </form>

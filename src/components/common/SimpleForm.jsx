@@ -28,7 +28,7 @@ export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
       <Input
         colorScheme="facebook"
         variant="outline"
-        width="30vh"
+        width="35vh"
         placeholder={inputPlaceholder}
         value={value}
         onChange={(e) => {

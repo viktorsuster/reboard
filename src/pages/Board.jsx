@@ -80,6 +80,12 @@ const Board = () => {
                       onSubmit={async (newTaskGroupName) => {
                         await updateTaskGroup(taskGroupID, { name: newTaskGroupName })
                         fetchData()
+                        toast({
+                          status: 'success',
+                          title: 'Successfully',
+                          description: `Edit group name from (${newName.toUpperCase()}) to (${newTaskGroupName.toUpperCase()})`,
+                          duration: 3000,
+                        })
                       }}
                     >
                       {board.tasks

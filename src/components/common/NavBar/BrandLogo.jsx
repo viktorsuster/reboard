@@ -11,7 +11,7 @@ const BrandLogo = ({ size = '3xl' }) => {
         reBoard
       </Text>
       <Tooltip hasArrow placement="auto-start" label="Search tasks" bg="blue.600">
-        <Input type="text" placeholder="Search ..." w="40vw" position="relative" float="right" />
+        <Input type="text" placeholder="Search ..." w="40vw" color="black" variant="filled" />
       </Tooltip>
     </>
   )

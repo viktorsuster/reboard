@@ -24,6 +24,8 @@ import {
   EditablePreview,
   EditableInput,
   useToast,
+  useColorMode,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
@@ -35,6 +37,8 @@ const Boards = (onSubmit) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
   const [newBoardName, setNewBoardName] = React.useState('')
+  const { colorMode, toggleColorMode } = useColorMode()
+  const colorToggle = useColorModeValue('black', 'orange.400')
   const toast = useToast()
 
   const fetchData = async () => {
@@ -70,7 +74,7 @@ const Boards = (onSubmit) => {
             <DrawerOverlay />
             <DrawerContent>
               <DrawerCloseButton />
-              <DrawerHeader>Edit Boards</DrawerHeader>
+              <DrawerHeader color={colorToggle}>Edit Boards</DrawerHeader>
 
               <DrawerBody>
                 <Accordion allowToggle>
@@ -136,6 +140,7 @@ const Boards = (onSubmit) => {
                                 }}
                               >
                                 <EditableInput
+                                  key={board.id}
                                   type="text"
                                   value={newBoardName}
                                   onChange={(e) => {
@@ -155,6 +160,9 @@ const Boards = (onSubmit) => {
               <DrawerFooter>
                 <Button variant="outline" mr={3} onClick={onClose}>
                   Close
+                </Button>
+                <Button onClick={toggleColorMode}>
+                  Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
                 </Button>
               </DrawerFooter>
             </DrawerContent>

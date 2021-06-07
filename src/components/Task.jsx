@@ -13,14 +13,16 @@ import {
   PopoverTrigger,
   Portal,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 
 export const Task = ({ name, content, onSubmit }) => {
   const [newTaskName, setNewTaskName] = React.useState('')
+  const colorToggleTask = useColorModeValue('white', 'gray.600')
 
   return (
-    <Box p="3" h="max-content" borderRadius="md" shadow="base">
+    <Box p="3" h="max-content" backgroundColor={colorToggleTask} borderRadius="md" shadow="base">
       <Popover>
         <PopoverTrigger>
           <Button size="sm" float="right">

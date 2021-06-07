@@ -19,6 +19,7 @@ import {
   Input,
   IconButton,
   useToast,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
@@ -27,10 +28,13 @@ import { MdEdit } from 'react-icons/md'
 export const TaskGroup = ({ title, color, children, onDelete, onSubmit }) => {
   const [newName, setNewName] = React.useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const colorToggle = useColorModeValue('black', 'white')
+  const colorToggleGroup = useColorModeValue('white', 'gray.900')
   const toast = useToast()
   return (
     <>
       <Box
+        backgroundColor={colorToggleGroup}
         tabIndex={-1}
         aria-label="Focus moved to this box"
         p="3"
@@ -63,10 +67,10 @@ export const TaskGroup = ({ title, color, children, onDelete, onSubmit }) => {
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem fontSize="xs" onClick={onOpen}>
+                <MenuItem color={colorToggle} fontSize="xs" onClick={onOpen}>
                   <EditIcon mr="3" /> Edit
                 </MenuItem>
-                <MenuItem fontSize="xs" onClick={onDelete}>
+                <MenuItem color={colorToggle} fontSize="xs" onClick={onDelete}>
                   <DeleteIcon mr="3" /> Delete
                 </MenuItem>
               </MenuList>

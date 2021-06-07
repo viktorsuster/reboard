@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   Box,
   Button,
@@ -33,10 +33,10 @@ import { createBoard, getBoards, removeBoard, updateBoard } from '../utils/api'
 import { SimpleForm } from '../components'
 
 const Boards = (onSubmit) => {
-  const [boards, setBoards] = React.useState([])
+  const [boards, setBoards] = useState([])
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const btnRef = React.useRef()
-  const [newBoardName, setNewBoardName] = React.useState('')
+  const btnRef = useRef()
+  const [newBoardName, setNewBoardName] = useState('')
   const { colorMode, toggleColorMode } = useColorMode()
   const colorToggle = useColorModeValue('black', 'orange.400')
   const toast = useToast()
@@ -46,22 +46,13 @@ const Boards = (onSubmit) => {
     setBoards(data)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     try {
       fetchData()
     } catch (e) {
       // do nothing
     }
   }, [])
-
-  if (!boards.length) {
-    toast({
-      status: 'error',
-      title: 'No boards',
-      description: "Let's create a new board!",
-      duration: 3000,
-    })
-  }
 
   return (
     <Box>
@@ -98,14 +89,29 @@ const Boards = (onSubmit) => {
                             mt="2"
                             key={board.id}
                             onClick={async () => {
-                              await removeBoard(board.id)
-                              fetchData()
-                              toast({
-                                status: 'error',
-                                title: `Delete ${board.name}`,
-                                description: "Let's create a new board!",
-                                duration: 3000,
-                              })
+                              switch (boards.length) {
+                                case 1:
+                                  await removeBoard(board.id)
+                                  fetchData()
+                                  toast({
+                                    status: 'error',
+                                    title: 'No boards',
+                                    description: "Let's create a new board!",
+                                    duration: 3000,
+                                    isClosable: true,
+                                  })
+                                  onClose()
+                                  break
+                                default:
+                                  await removeBoard(board.id)
+                                  fetchData()
+                                  toast({
+                                    status: 'error',
+                                    title: `Delete ${board.name}`,
+                                    description: "Let's create a new board!",
+                                    duration: 3000,
+                                  })
+                              }
                             }}
                           >
                             <DeleteIcon mr="3" />
@@ -133,10 +139,21 @@ const Boards = (onSubmit) => {
                               <EditIcon mr="3" />
                               <EditablePreview />
                               <form
-                                onSubmit={(e) => {
+                                onSubmit={async (e) => {
                                   e.preventDefault()
-                                  onSubmit(newBoardName)
-                                  setNewBoardName('')
+                                  if (newBoardName !== '') {
+                                    await onSubmit(newBoardName)
+                                    setNewBoardName('')
+                                    onClose()
+                                  } else {
+                                    toast({
+                                      title: 'Empty',
+                                      description: 'You must enter text',
+                                      status: 'error',
+                                      duration: 3000,
+                                      isClosable: true,
+                                    })
+                                  }
                                 }}
                               >
                                 <EditableInput

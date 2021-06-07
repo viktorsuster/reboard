@@ -18,6 +18,7 @@ import {
   useDisclosure,
   Input,
   IconButton,
+  useToast,
 } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
@@ -26,6 +27,7 @@ import { MdEdit } from 'react-icons/md'
 export const TaskGroup = ({ title, color, children, onDelete, onSubmit }) => {
   const [newName, setNewName] = React.useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const toast = useToast()
   return (
     <>
       <Box
@@ -82,11 +84,21 @@ export const TaskGroup = ({ title, color, children, onDelete, onSubmit }) => {
           <ModalHeader>Edit {title}</ModalHeader>
           <ModalCloseButton />
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault()
-              onSubmit(newName)
-              setNewName('')
-              onClose()
+              if (newName !== '') {
+                await onSubmit(newName)
+                setNewName('')
+                onClose()
+              } else {
+                toast({
+                  title: 'Empty',
+                  description: 'You must enter text',
+                  status: 'error',
+                  duration: 3000,
+                  isClosable: true,
+                })
+              }
             }}
           >
             <ModalBody>

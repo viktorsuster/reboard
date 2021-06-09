@@ -14,12 +14,14 @@ import {
   Portal,
   Text,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 
 export const Task = ({ name, content, onSubmit }) => {
   const [newTaskName, setNewTaskName] = React.useState('')
   const colorToggleTask = useColorModeValue('white', 'gray.600')
+  const toast = useToast()
 
   return (
     <Box p="3" h="max-content" backgroundColor={colorToggleTask} borderRadius="md" shadow="base">
@@ -31,10 +33,20 @@ export const Task = ({ name, content, onSubmit }) => {
         </PopoverTrigger>
         <Portal>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault()
-              onSubmit(newTaskName)
-              setNewTaskName('')
+              if (newTaskName !== '') {
+                await onSubmit(newTaskName)
+                setNewTaskName('')
+              } else {
+                toast({
+                  title: 'Empty',
+                  description: 'You must enter text',
+                  status: 'error',
+                  duration: 3000,
+                  isClosable: true,
+                })
+              }
             }}
           >
             <PopoverContent>
@@ -44,6 +56,7 @@ export const Task = ({ name, content, onSubmit }) => {
               <PopoverBody>
                 <Input type="text" value={name} disabled />
                 <Input
+                  autoFocus
                   type="text"
                   value={newTaskName}
                   onChange={(e) => {

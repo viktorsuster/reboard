@@ -55,7 +55,7 @@ const Board = () => {
             }}
           />
           <Center>
-            <SimpleGrid mt="10" columns="2" spacingX="20px" spacingY="20px">
+            <SimpleGrid mt="10" columns="4" spacingX="20px" spacingY="20px">
               {
                 // eslint-disable-next-line no-shadow
                 board.taskGroups?.map(({ name: newName, id: taskGroupID, taskIds }) => (

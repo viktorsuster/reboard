@@ -26,6 +26,7 @@ import {
   useToast,
   useColorMode,
   useColorModeValue,
+  Tooltip,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
@@ -208,9 +209,13 @@ const Boards = (onSubmit) => {
         </Text>
         <SimpleGrid mt="10" spacingY="20px">
           {boards.map((board) => (
-            <Link key={board.id} to={String(board.id)}>
-              {board.name}
-            </Link>
+            <>
+              <Tooltip hasArrow placement="top" label={`Open board: ${board.name}`} bg="blue.600">
+                <Link key={board.id} to={String(board.id)}>
+                  {board.name}
+                </Link>
+              </Tooltip>
+            </>
           ))}
         </SimpleGrid>
       </Center>

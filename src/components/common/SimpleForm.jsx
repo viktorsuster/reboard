@@ -1,6 +1,6 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import { Button, HStack, Input, useToast } from '@chakra-ui/react'
+import { Button, HStack, Input, Tooltip, useToast } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
 
 export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
@@ -25,16 +25,24 @@ export const SimpleForm = ({ onFormSubmit, buttonText, inputPlaceholder }) => {
         }
       }}
     >
-      <Input
-        colorScheme="facebook"
-        variant="outline"
-        width="full"
-        placeholder={inputPlaceholder}
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value)
-        }}
-      />
+      <Tooltip
+        hasArrow
+        placement="top-start"
+        label="Start typing here"
+        bg="blue.600"
+        openDelay={1000}
+      >
+        <Input
+          colorScheme="facebook"
+          variant="outline"
+          width="full"
+          placeholder={inputPlaceholder}
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value)
+          }}
+        />
+      </Tooltip>
       <Button leftIcon={<AddIcon />} colorScheme="facebook" type="submit" flex="none">
         {buttonText}
       </Button>

@@ -20,6 +20,7 @@ import {
   IconButton,
   useToast,
   useColorModeValue,
+  Tooltip,
 } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
@@ -55,17 +56,19 @@ export const TaskGroup = ({ title, color, children, onDelete, onSubmit }) => {
             mb="2"
           >
             <Menu>
-              <MenuButton float="right">
-                <IconButton
-                  as={Button}
-                  aria-label="Edit"
-                  size="md"
-                  variant="unstyled"
-                  colorScheme="white"
-                  ml="5px"
-                  icon={<MdEdit />}
-                />
-              </MenuButton>
+              <Tooltip hasArrow label="Edit Task Group" bg="blue.800" color="white">
+                <MenuButton float="right">
+                  <IconButton
+                    as={Button}
+                    aria-label="Edit"
+                    size="md"
+                    variant="unstyled"
+                    colorScheme="white"
+                    ml="5px"
+                    icon={<MdEdit />}
+                  />
+                </MenuButton>
+              </Tooltip>
               <MenuList>
                 <MenuItem color={colorToggle} fontSize="xs" onClick={onOpen}>
                   <EditIcon mr="3" /> Edit

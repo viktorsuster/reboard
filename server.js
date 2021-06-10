@@ -5,7 +5,7 @@ const path = require('path')
 const server = jsonServer.create()
 const router = jsonServer.router('data/database.json')
 const middlewares = jsonServer.defaults({ noCors: true })
-const port = process.env.PORT || 3004
+const port = process.env.PORT || 5432
 
 server.use(express.static('dist'))
 server.use(middlewares)

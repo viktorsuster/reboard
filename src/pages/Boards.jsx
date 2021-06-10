@@ -210,7 +210,12 @@ const Boards = (onSubmit) => {
         <SimpleGrid mt="10" spacingY="20px">
           {boards.map((board) => (
             <>
-              <Tooltip hasArrow placement="top" label={`Open board: ${board.name}`} bg="blue.600">
+              <Tooltip
+                hasArrow
+                placement="top"
+                label={`Jump to board: ${board.name}`}
+                bg="blue.600"
+              >
                 <Link key={board.id} to={String(board.id)}>
                   {board.name}
                 </Link>

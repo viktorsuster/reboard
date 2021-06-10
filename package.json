@@ -8,7 +8,7 @@
     "lint": "eslint --fix --ignore-path .gitignore \"**/*.{js,jsx}\"",
     "prestart": "cp data/database.json.dist data/database.json",
     "start": "node server.js",
-    "start:server": "json-server --watch data/database.json --routes routes.json --port 5432",
+    "start:server": "json-server --watch data/database.json --routes routes.json --port 3004",
     "start:client": "npm run dev",
     "prepare": "husky install"
   },

@@ -27,6 +27,7 @@ import {
   useColorMode,
   useColorModeValue,
   Tooltip,
+  Divider,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
@@ -207,22 +208,26 @@ const Boards = (onSubmit) => {
         <Text color="gray.400" mt="5">
           {boards.length} boards
         </Text>
-        <SimpleGrid mt="10" spacingY="20px">
-          {boards.map((board) => (
-            <>
-              <Tooltip
-                hasArrow
-                placement="top"
-                label={`Jump to board: ${board.name}`}
-                bg="blue.600"
-              >
-                <Link key={board.id} to={String(board.id)}>
-                  {board.name}
-                </Link>
-              </Tooltip>
-            </>
-          ))}
-        </SimpleGrid>
+        <Center>
+          <SimpleGrid w="50vw" mt="10" spacingY="20px">
+            <Divider />
+            {boards.map((board) => (
+              <>
+                <Tooltip
+                  hasArrow
+                  placement="top"
+                  label={`Jump to board: ${board.name}`}
+                  bg="blue.600"
+                >
+                  <Link key={board.id} to={String(board.id)}>
+                    {board.name}
+                  </Link>
+                </Tooltip>
+                <Divider />
+              </>
+            ))}
+          </SimpleGrid>
+        </Center>
       </Center>
     </Box>
   )
